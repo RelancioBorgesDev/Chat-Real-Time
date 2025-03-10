@@ -1,6 +1,6 @@
 # Comunicação em Tempo Real com Flask
 
-![imagem do chat](static/img/imagem.jpg)
+![imagem do chat](static/img/readme-chat.png)
 
 ## Regras da Aplicação
 
