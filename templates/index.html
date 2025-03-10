@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat em Tempo Real</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <!-- Lista de mensagens do chat -->
-    <ul id="messages"></ul>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chat em Tempo Real</h2>
+        </div>
+        <div class="chat-box" id="messages"></div>
+        <form id="form" action="" class="chat-form">
+            <input type="text" id="input" autocomplete="off" placeholder="Digite uma mensagem..." />
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 
-    <!-- Formulário para enviar mensagens -->
-    <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Enviar</button>
-    </form>
-
-    <!-- Carrega o script Socket.IO -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
-
     <script>
         // Conecta ao servidor SocketIO
         var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -24,16 +26,20 @@
         // Escuta o evento 'message' e exibe a mensagem recebida
         socket.on('message', function(msg) {
             var ul = document.getElementById('messages');
-            var li = document.createElement('li');
+            var li = document.createElement('div');
+            li.className = 'message';
             li.appendChild(document.createTextNode(msg));
             ul.appendChild(li);
+            ul.scrollTop = ul.scrollHeight; // Rola a tela para o fim
         });
 
         // Envia a mensagem quando o formulário for submetido
         document.getElementById('form').onsubmit = function() {
             var message = document.getElementById('input').value;
-            socket.emit('message', message);  // Envia a mensagem para o servidor
-            document.getElementById('input').value = '';  // Limpa o campo de input
+            if (message.trim() !== "") {
+                socket.emit('message', message);  // Envia a mensagem para o servidor
+                document.getElementById('input').value = '';  // Limpa o campo de input
+            }
             return false;  // Impede o envio do formulário de forma tradicional
         };
     </script>
