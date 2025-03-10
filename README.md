@@ -1,5 +1,7 @@
 # Comunicação em Tempo Real com Flask
 
+![imagem do chat](static/img/imagem.jpg)
+
 ## Regras da Aplicação
 
 - Criar a rota para renderizar o arquivo `index.html`.
