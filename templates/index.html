@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat em Tempo Real</title>
+</head>
+<body>
+    <!-- Lista de mensagens do chat -->
+    <ul id="messages"></ul>
+
+    <!-- Formulário para enviar mensagens -->
+    <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Enviar</button>
+    </form>
+
+    <!-- Carrega o script Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+
+    <script>
+        // Conecta ao servidor SocketIO
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Escuta o evento 'message' e exibe a mensagem recebida
+        socket.on('message', function(msg) {
+            var ul = document.getElementById('messages');
+            var li = document.createElement('li');
+            li.appendChild(document.createTextNode(msg));
+            ul.appendChild(li);
+        });
+
+        // Envia a mensagem quando o formulário for submetido
+        document.getElementById('form').onsubmit = function() {
+            var message = document.getElementById('input').value;
+            socket.emit('message', message);  // Envia a mensagem para o servidor
+            document.getElementById('input').value = '';  // Limpa o campo de input
+            return false;  // Impede o envio do formulário de forma tradicional
+        };
+    </script>
+</body>
+</html>
